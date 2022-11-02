@@ -7,10 +7,11 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.model.CounterModel
 import com.example.myapplication.model.View.CounterView
 import com.example.myapplication.model.presenter.Presenter
+import com.example.myapplication.model.presenter.showToast
 
 class MainActivity : AppCompatActivity(), CounterView {
     private lateinit var binding: ActivityMainBinding
-    private var count = 0
+
     val model = CounterModel()
     private val presenter = Presenter()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,22 +29,17 @@ class MainActivity : AppCompatActivity(), CounterView {
 
         binding.counter.setOnClickListener {
             presenter.increament()
-            if (binding.tvCounter.text.equals("10")) {
-                Toast.makeText(this@MainActivity, "Поздравляем", Toast.LENGTH_SHORT).show()
-            }
-            else if(binding.tvCounter.text.equals("15")){
-                textColor()
-            }
+
+            toast()
+            textColor()
+
 
         }
         binding.decriment.setOnClickListener {
             presenter.decreament()
-            if (binding.tvCounter.text.equals("10")) {
-                Toast.makeText(this@MainActivity, "Поздравляем", Toast.LENGTH_SHORT).show()
-            }
-            else if(binding.tvCounter.text.equals("15")){
-                textColor()
-            }
+            toast()
+            textColor()
+
 
         }
     }
@@ -56,10 +52,24 @@ class MainActivity : AppCompatActivity(), CounterView {
         binding.tvCounter.setTextColor(color)
     }
 
-    private fun textColor() {
-        presenter.changeColor()
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 
+
+    private fun textColor() {
+        if (binding.tvCounter.text.equals("15")) {
+            presenter.changeColor()
+        }
 
     }
+
+    private fun toast() {
+        if (binding.tvCounter.text.equals("10")) {
+            presenter.getMessage()
+        }
+
+    }
+
 
 }
